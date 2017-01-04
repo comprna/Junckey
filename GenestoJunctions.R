@@ -7,6 +7,7 @@
 #arg[3]: Input file --> SJ.out.enriched.filtered.bed: file with the exons that overlaps exactly with the junction
 #arg[4]: Output file --> SJ.out.geneAnnotated.bed: input file with the list of genes per junction and the type of each junction
 
+library(data.table)
 
 ########################
 #Gene annotation
@@ -14,10 +15,10 @@
 
 CHARACTER_command_args <- commandArgs(trailingOnly=TRUE)
 
-original_file_bed <- read.table(file=CHARACTER_command_args[1])
+original_file_bed <- fread(file=CHARACTER_command_args[1])
 colnames(original_file_bed) <- c("chrom","start","end","id","unique_junction_reads","strand","annotated")
 
-file_unique <- read.table(file=CHARACTER_command_args[2],fill=TRUE)
+file_unique <- fread(file=CHARACTER_command_args[2],fill=TRUE)
 
 #Remove those with 0 gene associated
 file_unique_f <- file_unique[which(file_unique$V2!="0"),]
@@ -71,7 +72,7 @@ colnames(original_file_bed_final)[8] <- "Associated_genes"
 ########################
 
 # Load the file with the junctions that overlapps exactly with the exons
-original_file_bed_filtered <- read.table(file=CHARACTER_command_args[3],sep="\t")
+original_file_bed_filtered <- fread(file=CHARACTER_command_args[3],sep="\t")
 
 #Do the unique from just the exons
 original_file_bed_filtered2 <- unique(original_file_bed_filtered[,c(-5,-9,-10,-13:-22)])
