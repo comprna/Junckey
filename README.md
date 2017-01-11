@@ -18,6 +18,17 @@ This script generates two files, with the samples in the columns and the junctio
   - 5: Novel junction, neither donor nor acceptor site is annotated
 - **rpkm.tab**: normalizated rpkm values from the read counts. For the following steps we will just use the readCounts file
 
+If the processing of lots of samples is needed and a cluster system is available, there is an adapted version for paralelizing jobs. The pipeline is splited into 2 parts:
+
+- part1: run a job per sample
+```
+qsub -b y "format_STAR_output_pipeline_cluster_part1.sh <path_to_STAR_samples> <gtf_annotation>"
+```
+- part2: once all the jobs created by part1 have finished, run part2 in order to gather all the data
+```
+qsub -b y "format_STAR_output_pipeline_cluster_part2.sh <path_to_STAR_samples>"
+```
+
 ### 2. Clustering
 
 For computing the PSI of the junctions, we propose to do it according to the relative inclusion of the nearby junctions. In order to achieve this, we can calculate clusters of our junctions using LeafCutter (https://github.com/davidaknowles/leafcutter).
