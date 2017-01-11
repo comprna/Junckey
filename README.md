@@ -1,6 +1,6 @@
-# PSI-Clustering-Junction
+# Junckie
 
-The next scripts have been developed for generating PSI (Percent Spliced Index) values of junctions clusters. This pipleine is adpated for using STAR (https://github.com/alexdobin/STAR).
+Junckie is a collection of scripts for the calculation of PSI (Proportion Spliced Index) values of junctions clusters. This pipeline is adpated for using STAR (https://github.com/alexdobin/STAR).
 
 ### 1. Format STAR output
 
