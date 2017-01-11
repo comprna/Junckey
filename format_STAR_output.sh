@@ -19,12 +19,15 @@
 io_dir=$1
 gtf_dir=$2
 
+#Export this library for using R-3.3.2
+export LD_LIBRARY_PATH=/soft/devel/gcc-4.9.3/lib64:$LD_LIBRARY_PATH
+
 echo "Starting execution. "$(date)
 
 #1. Convert the output file from STAR with the junctions to bed format
 for sample in $(ls "$io_dir");do
 	echo "Converting to BED $sample... "	
-	/soft/R/R-3.2.3/bin/Rscript /projects_rg/SCLC_cohorts/scripts/STARtoBED.R "$io_dir"$(echo $sample)/SJ.out.tab "$io_dir"$(echo $sample)/SJ.out.bed
+	/soft/R/R-3.3.2/bin/Rscript /projects_rg/SCLC_cohorts/scripts/STARtoBED.R "$io_dir"$(echo $sample)/SJ.out.tab "$io_dir"$(echo $sample)/SJ.out.bed
 done
 
 #2. Use bedtools for finding in which regions the junctions are falling in the annotation
@@ -51,7 +54,7 @@ for sample in $(ls "$io_dir");do
 	#Replace the junctions associated to genes "0" with a blank space
 	sed -i -e 's/ 0/ "";/g' "$io_dir"$(echo $sample)/SJ.out.enriched.unique.bed
 	#Associate the list of genes to each junction to the original bed file
-	/soft/R/R-3.2.3/bin/Rscript /projects_rg/SCLC_cohorts/scripts/GenestoJunctions.R "$io_dir"$(echo $sample)/SJ.out.bed "$io_dir"$(echo $sample)/SJ.out.enriched.unique.bed "$io_dir"$(echo $sample)/SJ.out.enriched.filtered.bed "$io_dir"$(echo $sample)/SJ.out.geneAnnotated.bed
+	/soft/R/R-3.3.2/bin/Rscript /projects_rg/SCLC_cohorts/scripts/GenestoJunctions.R "$io_dir"$(echo $sample)/SJ.out.bed "$io_dir"$(echo $sample)/SJ.out.enriched.unique.bed "$io_dir"$(echo $sample)/SJ.out.enriched.filtered.bed "$io_dir"$(echo $sample)/SJ.out.geneAnnotated.bed
 done
 
 #4. Pool the reads from all the samples in one file
@@ -62,7 +65,7 @@ done
 
 #4. Format the Log.Final.out files
 echo "Formatting Log.Final.out files..."
-/soft/R/R-3.2.3/bin/Rscript /projects_rg/SCLC_cohorts/scripts/format_Log_STAR.R "$io_dir"
+/soft/R/R-3.3.2/bin/Rscript /projects_rg/SCLC_cohorts/scripts/format_Log_STAR.R "$io_dir"
 
 #5. Pool the reads from all the samples in one file
 echo "Gathering all files into one..."
