@@ -95,6 +95,8 @@ def main():
         file_merged['cluster'] = cluster
         file_merged['id2'] = id2
 
+        print("Nrows of file_merged "+str(len(file_merged.index)))
+
         #####################################################################
         #3. Enrich the output. Get the Junction type and the associated genes
         #####################################################################
@@ -111,7 +113,8 @@ def main():
 
         #Merge this info with the previous file for getting the Junction type and the associated genes
         file_merged2 = file_merged.merge(readCounts, left_on="id2", right_on="id2", how='inner')
-        #print(len(file_merged2.index))
+
+        print("Nrows of file_merged2 "+str(len(file_merged2.index)))
 
 
 
