@@ -1,6 +1,6 @@
-# Junckie
+# Junckey
 
-Junckie is a collection of scripts for the calculation of PSI (Proportion Spliced Index) values of junctions clusters. This pipeline is adpated for using STAR (https://github.com/alexdobin/STAR).
+Junckey is a collection of scripts for the calculation of PSI (Proportion Spliced Index) values of junctions clusters. This pipeline is adpated for using STAR (https://github.com/alexdobin/STAR).
 
 ### 1. Format STAR output
 
