@@ -7,8 +7,7 @@
 
 CHARACTER_command_args <- commandArgs(trailingOnly=TRUE)
 
-# sj_count <- read.table(file=CHARACTER_command_args[1],sep="\t")
-sj_count <- read.table(file="/projects_rg/Bellmunt/STAR/whole_cohort_v2/20160529-vh146-pool16-CWZ3082-4/SJ.out.tab",sep="\t")
+sj_count <- read.table(file=CHARACTER_command_args[1],sep="\t")
 
 colnames(sj_count) <- c("chrom","first_bp_intron","last_bp_intron","strand","intron_motif"
                     ,"annotated","unique_junction_reads","multimap_junction_reads"
