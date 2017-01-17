@@ -7,15 +7,19 @@
 
 CHARACTER_command_args <- commandArgs(trailingOnly=TRUE)
 
-sj_count <- read.table(file=CHARACTER_command_args[1],sep="\t")
+# sj_count <- read.table(file=CHARACTER_command_args[1],sep="\t")
+sj_count <- read.table(file="/projects_rg/Bellmunt/STAR/whole_cohort_v2/20160529-vh146-pool16-CWZ3082-4/SJ.out.tab",sep="\t")
+
 colnames(sj_count) <- c("chrom","first_bp_intron","last_bp_intron","strand","intron_motif"
                     ,"annotated","unique_junction_reads","multimap_junction_reads"
                     ,"max_overhang")
-sj_count$first_bp_intron <- sj_count$first_bp_intron - 2
-sj_count$last_bp_intron <- sj_count$last_bp_intron + 1
+#Don't forget to print the number without the scientifc notation (i.e. 2.7e+13)
+sj_count$first_bp_intron <- as.character(format(sj_count$first_bp_intron - 2, scientific = FALSE))
+sj_count$last_bp_intron <- as.character(format(sj_count$last_bp_intron + 1, scientific = FALSE))
 sj_count$strand2 <- ifelse(sj_count$strand=="1","+",ifelse(sj_count$strand=="2","-",NA))
 sj_count$score <- 0
-sj_count$id <- paste0(sj_count$chrom,";",sj_count$first_bp_intron,";",sj_count$last_bp_intron,";",sj_count$strand2)
+sj_count$id <- paste0(as.character(sj_count$chrom),";",sj_count$first_bp_intron,";",sj_count$last_bp_intron,";",sj_count$strand2)
+#Remove the ones without strand
 sj_count_filter <- sj_count[which(!is.na(sj_count$strand2)),]
 sj_count_filter2 <- sj_count_filter[,c("chrom","first_bp_intron","last_bp_intron","id","unique_junction_reads","strand2","annotated")]
 
