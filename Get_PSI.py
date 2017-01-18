@@ -16,11 +16,11 @@ from copy import deepcopy
 def main():
     try:
 
-        LeafCutter_path = sys.argv[1]
-        readCounts_path = sys.argv[2]
-
-        # LeafCutter_path = "/projects_rg/Bellmunt/STAR/whole_cohort/LeafCutter_output"
-        # readCounts_path = "/projects_rg/Bellmunt/STAR/whole_cohort/readCounts.tab"
+        # LeafCutter_path = sys.argv[1]
+        # readCounts_path = sys.argv[2]
+        #
+        LeafCutter_path = "/projects_rg/Bellmunt/STAR/whole_cohort_v2/LeafCutter_output"
+        readCounts_path = "/projects_rg/Bellmunt/STAR/whole_cohort_v2/readCounts.tab"
 
         print("Starting execution: "+time.strftime('%H:%M:%S')+"\n\n")
 
@@ -29,7 +29,6 @@ def main():
         #############################################################################################################
 
         bashCommand = "ls "+LeafCutter_path+"/*sorted.gz"
-        # bashCommand = "ls /genomics/users/juanluis/SCLC/data/test_LeafCutter/LeafCutter_cluster_results_prueba/*sorted.gz"
         cluster_files = os.popen(bashCommand, "r")
 
         for line in cluster_files:
@@ -56,19 +55,18 @@ def main():
             output_path = LeafCutter_path + "/" + line.rstrip().split("/").pop()
             file.to_csv(output_path[:-3], sep=" ", index=False,  float_format='%.f', header=False)
 
-        ##################################################
-        #2. Remove all the Na rows and merge all the files
-        ##################################################
+        #########################
+        #2. Merge all the files #
+        #########################
 
         bashCommand = "ls "+LeafCutter_path+"/*sorted"
-        # bashCommand = "ls /genomics/users/juanluis/test_LeafCutter/*sorted"
         cluster_files = os.popen(bashCommand, "r")
         counter = 0
 
         for line in cluster_files:
 
-            #Load each file and remove the Nan values
-            file = pd.read_table(line.rstrip(), header=None, delimiter=" ").dropna()
+            #Load each file
+            file = pd.read_table(line.rstrip(), header=None, delimiter=" ")#.dropna()
             #Remove the column with the reads
             del file[1]
             sampleId = line.rstrip().split("/").pop().split(".junc")[0]
@@ -95,13 +93,11 @@ def main():
         file_merged['cluster'] = cluster
         file_merged['id2'] = id2
 
-        print("Nrows of file_merged "+str(len(file_merged.index)))
-
         #####################################################################
         #3. Enrich the output. Get the Junction type and the associated genes
         #####################################################################
 
-        print("Loading readCounts file...\n")
+        print("Loading "+readCounts_path+"...\n")
         readCounts = pd.read_table(readCounts_path, delimiter="\t")
 
         #Format previously the id. Add 1 to the end (Leafcutter adds 1 to the end cordinates)
@@ -113,10 +109,6 @@ def main():
 
         #Merge this info with the previous file for getting the Junction type and the associated genes
         file_merged2 = file_merged.merge(readCounts, left_on="id2", right_on="id2", how='inner')
-
-        print("Nrows of file_merged2 "+str(len(file_merged2.index)))
-
-
 
         #Put it in the proper order for the vcf file
         sorted_columns = sorted(file_merged2.columns)
@@ -146,7 +138,7 @@ def main():
         #Save the dataframe
         output_path = LeafCutter_path + "/psi_all_samples.tab"
         print("Creating file "+output_path+"...")
-        file_merged_sorted.to_csv(output_path, sep="\t", index=False)
+        file_merged_sorted.to_csv(output_path, sep="\t", index=False, na_rep='NaN')
 
         print("Done. Exiting program. "+time.strftime('%H:%M:%S')+"\n\n")
 
