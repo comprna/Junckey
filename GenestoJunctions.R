@@ -1,4 +1,4 @@
-#!/soft/R/R-3.2.3/bin/Rscript
+#!/soft/R/R-3.3.2/bin/Rscript
 
 #GenestoJunctions.R: The next code will get the unique genes associated to each junction and will associate this list of genes to each junctions in the original bed file
 #Additionally, we will study the type of each junction (1: Annotated, 2: New connection, 3: 5ss, 4: 3ss, 5: New junction)
@@ -7,18 +7,25 @@
 #arg[3]: Input file --> SJ.out.enriched.filtered.bed: file with the exons that overlaps exactly with the junction
 #arg[4]: Output file --> SJ.out.geneAnnotated.bed: input file with the list of genes per junction and the type of each junction
 
-library(data.table)
+#install.packages("data.table")
+require(data.table)
 
 ########################
 #Gene annotation
 ########################
 
+print("Gene annotation...")
 CHARACTER_command_args <- commandArgs(trailingOnly=TRUE)
 
-original_file_bed <- fread(file=CHARACTER_command_args[1])
+original_file_bed <- fread(CHARACTER_command_args[1])
 colnames(original_file_bed) <- c("chrom","start","end","id","unique_junction_reads","strand","annotated")
+original_file_bed <- as.data.frame(original_file_bed)
 
-file_unique <- fread(file=CHARACTER_command_args[2],fill=TRUE)
+file_unique <- fread(CHARACTER_command_args[2],header=FALSE)
+file_unique <- as.data.frame(file_unique)
+
+#Remove the " and ; from the genes column
+file_unique$V2 <- unlist(lapply(file_unique$V2,function(x)gsub("\"|\\;","",x,perl=TRUE)))
 
 #Remove those with 0 gene associated
 file_unique_f <- file_unique[which(file_unique$V2!="0"),]
@@ -35,7 +42,7 @@ list_genes <- ""
 matrix_output <- matrix(data="",nrow=length(table2),ncol=2)
 colnames(matrix_output) <- c("Id","Genes")
 cont <- 1
-i <- 3
+i <- 1
 for(i in 1:nrow(duplicated_ids2)){
   if(i==1){
     id <- as.character(duplicated_ids2[i,]$V1)
@@ -66,13 +73,16 @@ file_unique3 <- unique(file_unique2[,c("V1","Genes_final")])
 original_file_bed_final <- merge(original_file_bed,file_unique3,by.x="id",by.y="V1",all.x=TRUE)
 colnames(original_file_bed_final)[8] <- "Associated_genes"
 # write.table(original_file_bed_final,file=CHARACTER_command_args[3],sep="\t",quote=FALSE,row.names=FALSE)
+print("Done")
 
 ########################
 #Type of the junctions
 ########################
 
+print("Type of the junctions...")
 # Load the file with the junctions that overlapps exactly with the exons
-original_file_bed_filtered <- fread(file=CHARACTER_command_args[3],sep="\t")
+original_file_bed_filtered <- fread(CHARACTER_command_args[3],sep="\t")
+original_file_bed_filtered <- as.data.frame(original_file_bed_filtered)
 
 #Do the unique from just the exons
 original_file_bed_filtered2 <- unique(original_file_bed_filtered[,c(-5,-9,-10,-13:-22)])
@@ -87,7 +97,11 @@ flag_Anno <- 0
 flag_5s <- 0
 flag_3s <- 0
 id <- ""
+
+#print(paste0("Size of the matrix",nrow(original_file_bed_filtered2)))
+
 while(i<=nrow(original_file_bed_filtered2)){
+  #print(i)
   if(i==1){
     id <- as.character(original_file_bed_filtered2[i,]$V4)
   }
@@ -195,3 +209,5 @@ original_file_bed_final2 <- merge(original_file_bed_final,output_df,by.x="id",by
 colnames(original_file_bed_final2)[9] <- "Type_junction"
 original_file_bed_final2$Type_junction <- ifelse(is.na(original_file_bed_final2$Type_junction),5,original_file_bed_final2$Type_junction)
 write.table(original_file_bed_final2,file=CHARACTER_command_args[4],sep="\t",quote=FALSE,row.names=FALSE)
+
+print("Done")
