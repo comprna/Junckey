@@ -16,11 +16,11 @@ from copy import deepcopy
 def main():
     try:
 
-        # LeafCutter_path = sys.argv[1]
-        # readCounts_path = sys.argv[2]
-        #
-        LeafCutter_path = "/projects_rg/Bellmunt/STAR/whole_cohort_v2/LeafCutter_output"
-        readCounts_path = "/projects_rg/Bellmunt/STAR/whole_cohort_v2/readCounts.tab"
+        LeafCutter_path = sys.argv[1]
+        readCounts_path = sys.argv[2]
+
+        # LeafCutter_path = "/projects_rg/Bellmunt/STAR/whole_cohort_v2/LeafCutter_output"
+        # readCounts_path = "/projects_rg/Bellmunt/STAR/whole_cohort_v2/readCounts.tab"
 
         print("Starting execution: "+time.strftime('%H:%M:%S')+"\n\n")
 
