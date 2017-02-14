@@ -49,15 +49,15 @@ def main():
         # 1. Load the input file
         print("Loading "+args.input+"...")
         input_file = pd.read_table(args.input, delimiter="\t")
-        # input_file = pd.read_table("/genomics/users/juanluis/FastQTL_analysis/SCLC/Junctions/data/INTRON/psi_all_samples.txt", delimiter="\t")
+        # input_file = pd.read_table("/genomics/users/juanluis/FastQTL_analysis/v3/SCLC/Junctions/tables/length_clusters.tab", delimiter="\t")
         nameFileaux = args.input.split("/")[-1]
 
         # 2. Split the file
+        print("Splitting the file...")
         #Generate also a file with the commands for being executed in the cluster
         n = int(args.n)
         output_commands_path = args.output + "/commands_splitter_"+str(n)+".txt"
         commands_file = open(output_commands_path, 'w')
-        print("Splitting the file...")
         #Get the size of each piece
         size = int(len(input_file)/n)
         for i in range(n):
@@ -91,8 +91,9 @@ def main():
 
         exit(0)
 
-    except Exception:
-        print(Exception)
+    except Exception as error:
+        print('\nERROR: ' + repr(error))
+        print("Aborting execution")
         sys.exit(1)
 
 
