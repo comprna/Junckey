@@ -32,6 +32,10 @@ parser.add_argument("-g", "--genotype", required=True,
                     help="Psi file")
 parser.add_argument("-o", "--output", required=True,
                     help="Output folder")
+parser.add_argument("-s", "--script", required=True,
+                    help="Location of the script to run")
+parser.add_argument("-m", "--mode", required=True,
+                    help="Mode of execution (SCLC or TCGA)")
 
 def main():
 
@@ -63,11 +67,7 @@ def main():
             #Save each piece in a separate file
             output_path = args.output + "/" + nameFileaux + ".part" + str(i)
             piece.to_csv(output_path, sep="\t", index=False)
-            # commands_file.write("python3.4 /genomics/users/juanluis/FastQTL_analysis_v2/scripts/Format_genotype_v4.py -p /genomics/users/juanluis/FastQTL_analysis_v2/SCLC/Junctions/tables/psi_all_samples.txt"+
-            #                     " -g /genomics/users/juanluis/FastQTL_analysis_v2/SCLC/Junctions/tables/sclc_mutations_clusters.bed -c /genomics/users/juanluis/FastQTL_analysis_v2/SCLC/Junctions/tables/length_clusters.tab.part"+str(i)+
-            #                     " -o /data/users/juanluis/SCLC_quantifications/FastQTL_v2/SCLC/Junctions/formatted_genotype.vcf.part"+str(i)+
-            #                     " -i /data/users/juanluis/SCLC_quantifications/FastQTL_v2/SCLC/Junctions/ids_not_found.txt.part"+str(i)+"\n")
-            commands_file.write("python3.4 /genomics/users/juanluis/FastQTL_analysis_v2/scripts/Format_genotype_v4.py -p " + args.phenotype +
+            commands_file.write("python3.4 "+ args.script +" -"+ args.mode +" -p " + args.phenotype +
                 " -g "+ args.genotype +" -c "+ output_path +
                 " -o "+ args.output +"/formatted_genotype.vcf.part" + str(i) +
                 " -i "+ args.output +"/ids_not_found.txt.part" + str(i) + "\n")
@@ -79,11 +79,7 @@ def main():
             # Save each piece in a separate file
             output_path = args.output + "/" + nameFileaux + ".part" + str(i+1)
             piece.to_csv(output_path, sep="\t", index=False)
-            # commands_file.write("python3.4 /genomics/users/juanluis/FastQTL_analysis_v2/scripts/Format_genotype_v4.py -p /genomics/users/juanluis/FastQTL_analysis_v2/SCLC/Junctions/tables/psi_all_samples.txt" +
-            #                     " -g /genomics/users/juanluis/FastQTL_analysis_v2/SCLC/Junctions/tables/sclc_mutations_clusters.bed -c /genomics/users/juanluis/FastQTL_analysis_v2/SCLC/Junctions/tables/length_clusters.tab.part" + str(i+1) +
-            #                     " -o /data/users/juanluis/SCLC_quantifications/FastQTL_v2/SCLC/Junctions/formatted_genotype.vcf.part" + str(i+1) +
-            #                     " -i /data/users/juanluis/SCLC_quantifications/FastQTL_v2/SCLC/Junctions/ids_not_found.txt.part" + str(i+1)+"\n")
-            commands_file.write("python3.4 /genomics/users/juanluis/FastQTL_analysis_v2/scripts/Format_genotype_v4.py -p " + args.phenotype +
+            commands_file.write("python3.4 "+ args.script +" -"+ args.mode +" -p " + args.phenotype +
                 " -g "+ args.genotype +" -c "+ output_path +
                 " -o "+ args.output +"/formatted_genotype.vcf.part" + str(i+1) +
                 " -i "+ args.output +"/ids_not_found.txt.part" + str(i+1) + "\n")
