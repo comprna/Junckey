@@ -32,11 +32,11 @@ def main():
 
         logger.info('Starting execution')
 
-        # file_path = sys.argv[1]
-        # output_path = sys.argv[2]
+        file_path = sys.argv[1]
+        output_path = sys.argv[2]
 
-        file_path = "/projects_rg/SUPPA2/general_files/Homo_sapiens.GRCh37.75.formatted.V2.gtf"
-        output_path = "/projects_rg/SUPPA2/general_files/gene_coordinates.tab"
+        # file_path = "/projects_rg/SUPPA2/general_files/Homo_sapiens.GRCh37.75.formatted.V2.gtf"
+        # output_path = "/projects_rg/SUPPA2/general_files/gene_coordinates.tab"
 
         # 1. Read the annotation saving the coordinates for each gene
 
