@@ -6,7 +6,7 @@ Extract_gene_coordinates.py: Given an annotation, extracts the positions for eac
 
 """
 
-import logging
+import logging, sys
 
 # create logger
 logger = logging.getLogger(__name__)
