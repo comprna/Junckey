@@ -2,7 +2,7 @@
 @authors: Juan L. Trincado
 @email: juanluis.trincado@upf.edu
 
-Extract_gene_coordinates.py: Given an annotation, extracts the positions for each gene
+Extract_gene_coordinates.py: Given an annotation, extracts the positions for each gene and return a BED file
 
 """
 
@@ -66,8 +66,8 @@ def main():
         output_file = open(output_path, 'w')
 
         for key in sorted(dict_start.keys()):
-            output_file.write(key + "\t" + str(dict_start[key]) + "\t" + str(dict_end[key]) + "\t" +
-                              str(dict_chr[key]) + "\t" + str(dict_strand[key]) + "\n")
+            output_file.write(str(dict_chr[key]) + "\t" + str(dict_start[key]) + "\t" + str(dict_end[key]) + "\t" +
+                              key + "\t0\t" + str(dict_strand[key]) + "\n")
 
         # 3. Close the file handler
         logger.info('Saved ' + output_path)
