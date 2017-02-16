@@ -13,13 +13,13 @@ import time
 def main():
     try:
 
-        geneAnnotated_path = sys.argv[1]
-        junctions_path = sys.argv[2]
-        output_path = sys.argv[3]
+        # geneAnnotated_path = sys.argv[1]
+        # junctions_path = sys.argv[2]
+        # output_path = sys.argv[3]
 
-        # geneAnnotated_path = "/projects_rg/Annotation/Junctions/aux.sorted.geneAnnotated.bed"
-        # junctions_path = "/projects_rg/Annotation/Junctions/Junctions_psi_clusters_TCGA_RefSeq.tab"
-        # output_path = "/projects_rg/Annotation/Junctions/Junctions_psi_clusters_TCGA_Ensembl.tab"
+        geneAnnotated_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/aux.sorted.geneAnnotated.bed"
+        junctions_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_Ensembl.tab"
+        output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_RefSeq.tab"
 
         print("Starting execution: "+time.strftime('%H:%M:%S')+"\n")
 
@@ -35,9 +35,19 @@ def main():
             next(f)
             for line in f:
                 tokens = line.rstrip().split("\t")
-                # Add 1 to the end cordinate and substitute by :
+
+                #TODO: The first time that I implemented this script, I needed to add1 to the end
+                # (I mapped the RefSeq TCGA junctions to Ensembl). NOw, I need to map the Ensembl SCLC
+                # junctions to Refseq, and it seems that it's not necesary this step. For now I'm gonna comment this part
+                # but it will be good take a look on this in the future
+
+                # Add 1 to the end cordinate and substitue ; by :
+                # tokens2 = tokens[0].split(";")[:-1]
+                # tokens2[2] = str(int(tokens2[2]) + 1)
+                # id_formatted = ":".join(tokens2)
+
+                # Substitue ; by :
                 tokens2 = tokens[0].split(";")[:-1]
-                tokens2[2] = str(int(tokens2[2]) + 1)
                 id_formatted = ":".join(tokens2)
 
                 dict_junction_gene[id_formatted] = tokens[7]
@@ -55,7 +65,9 @@ def main():
             outFile.write(next(f))
             for line in f:
                 tokens = line.rstrip().split("\t")
-                id_formatted = ":".join(tokens[0].split(":")[:-1])
+                #TODO: The first time that I implemented this script, the junction_file had :, but now I have ;
+                # id_formatted = ":".join(tokens[0].split(":")[:-1])
+                id_formatted = ":".join(tokens[0].split(";")[:-1])
                 if (id_formatted in dict_junction_gene):
                     tokens[6] = dict_junction_gene[id_formatted]
                     tokens[5] = dict_junction_type[id_formatted]
