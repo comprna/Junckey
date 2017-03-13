@@ -10,7 +10,7 @@ import pandas as pd
 from argparse import ArgumentParser, RawTextHelpFormatter
 # from threading import Thread
 
-import logging, sys
+import logging, sys, time, random
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -33,23 +33,40 @@ description = \
     "Description:\n\n" + \
     "given a list of mutations, we will check which ones are in the dbSNP database and filter out"
 
-parser = ArgumentParser(description=description, formatter_class=RawTextHelpFormatter,add_help=True)
-parser.add_argument("-db", "--SNP", required=True,
-                    help="File with the SNP")
-parser.add_argument("-g", "--genotype", required=True,
-                    help="File with the mutations table")
-parser.add_argument("-o", "--output", required=True,
-                    help="Output file")
+parser = ArgumentParser(description=description, formatter_class=RawTextHelpFormatter, add_help=True)
+parser.add_argument("-db", "--SNP", required=True, help="File with the SNP")
+parser.add_argument("-g", "--genotype", required=True, help="File with the mutations table")
+# parser.add_argument("-n", "--n", required=False, default=1, help="Number of threads")
+parser.add_argument("-o", "--output", required=True, help="Output file")
 
+
+#
+# class MyThread(Thread):
+#     def __init__(self, val):
+#         ''' Constructor. '''
+#
+#         Thread.__init__(self)
+#         self.val = val
+#
+#     def run(self):
+#         for i in range(1, self.val):
+#             print('Value %d in thread %s' % (i, self.getName()))
+#
+#             # Sleep for random time between 1 ~ 3 second
+#             secondsToSleep = random.randint(1, 5)
+#             print('%s sleeping fo %d seconds...' % (self.getName(), secondsToSleep))
+#             time.sleep(secondsToSleep)
 
 def main():
 
     args = parser.parse_args()
-
-    dbSNP_path = args.phenotype
+    dbSNP_path = args.SNP
     genotype_path = args.genotype
     output_path = args.output
-    n = args.n
+    # n = args.n
+    output_discarded_path = "/".join(output_path.split("/")[:-1]) + "/discarded.tab"
+
+    print(output_discarded_path)
 
 
     # dbSNP_path = "/genomics/users/juanluis/dbSNP144.TEST.tab"
@@ -59,106 +76,58 @@ def main():
 
     # 1. Load the dbSNP file
     logger.info("Loading " + dbSNP_path + "...")
-    # dbSNP = pd.read_table(dbSNP_path, delimiter="\t")
-    # dbSNP.columns = ['id','chr', 'start', 'end', 'id', 'number1', 'strand', 'original',
-    #                     'mutation', 'ori_mut','info','unknown','number1','number2', 'id2', 'id3', 'number3','info2',
-    #                  'gene','number4','0','1','2','3','4','5']
-    logger.info("Creating dictionary...")
     dbSNP_dict = {}
     for line in open(dbSNP_path):
         tokens = line.rstrip().split("\t")
         id = tokens[1]+"_"+tokens[2]+"_"+tokens[3]
-        dbSNP_dict[id] = tokens[9]
+        mutation_list = tokens[9].split("/")
+        #If the id exists, add this mutation to the list (if it doesn't exist)
+        if id not in dbSNP_dict:
+            dbSNP_dict[id] = mutation_list
+        else:
+            # logger.info("Repeated SNP in " + id)
+            dictionary_mutation_list = dbSNP_dict[id]
+            for x in mutation_list:
+                if (x not in dictionary_mutation_list):
+                    dbSNP_dict[id].append(x)
+
+    logger.info("Scanning "+genotype_path+"...")
+
+    #Create a new output file
+    outFile = open(output_path, 'w')
+    out_discardedFile = open(output_discarded_path, 'w')
 
 
+    inFileData = [line.rstrip().split("\t") for line in open(genotype_path)]
+    cont = 0
 
-    # 2. We are gonna split the mutations table in n pieces and run a thread per each piece
+    for i,rowItems in enumerate(inFileData):
+        percentage = "Scanning dbSNP file......" + str(round(i * 100 / len(inFileData), 3)) + "%"
+        sys.stdout.write("\r%s" % percentage)
+        sys.stdout.flush()
+        id_genotype = rowItems[0]+"_"+rowItems[1]+"_"+rowItems[2]
+        mutation_genotype = rowItems[9]
+        # If the mutation is the same as in dbSNP, don't output this line
+        if id_genotype in dbSNP_dict:
+            dictionary_mutation_list = dbSNP_dict[id_genotype]
+            if (mutation_genotype in dictionary_mutation_list):
+                cont = cont + 1
+                out_discardedFile.write("\t".join(rowItems) + "\n")
+                continue
+        outFile.write("\t".join(rowItems) + "\n")
 
+    percentage = "Scanning dbSNP file......" + "100%\n"
+    sys.stdout.write("\r%s" % percentage)
 
-    # # 3. Load the dbSNP file
-    # logger.info("Loading " + genotype_path + "...")
-    # # genotype = pd.read_table(genotype_path, delimiter="\t")
-    # # genotype.columns = ['chr', 'start', 'end', 'cancer_type', 'id', 'number1', 'number2', 'number3', 'original',
-    # #                     'mutation','score','p_value','chr2','start2', 'end2', 'id2', '.','strand']
-    #
-    # # 4. For each mutation in genotype, look if that mutation appears in dbSNP
-    # logger.info("Looking for mutations...")
-    #
-    # inFileData = [line.rstrip().split("\t") for line in open(genotype_path)]
-    #
-    # for rowItems in inFileData:
-    #     #Look for the mutation in the dbSNP file
-    #     mutation = rowItems[9]
-    #     chr = rowItems[0]
-    #     start = rowItems[1]
-    #     end = rowItems[2]
-    #     # TODO: terminar
-    #     # row = (dbSNP.loc[dbSNP['chr'] == chr])
-    #     row = dbSNP.loc[dbSNP['chr'] == chr & dbSNP['start'] == start & dbSNP['end'] == end]
-
-
-
-
-
-
-
-
-
-
-
-
-    #
-    #
-    #
-    #
-    # print("Starting execution: "+time.strftime('%H:%M:%S'))
-    #
-    # print("Loading dbSNP...")
-    # dbSNP = pd.read_table("/projects_rg/Annotation/dbSNP/dbSNP144_part1.tab", delimiter="\t")
-    #
-    # # print(dbSNP)
-    #
-    # bashCommand = "ls /projects_rg/SCLC_cohorts/George/data/Mutation_files/*_mutcall_filtered.bed"
-    # bed_files = os.popen(bashCommand, "r")
-    #
-    # for line in bed_files:
-    #
-    #     print("Loading file: " + line.rstrip() + "...\n")
-    #
-    #     mutation = pd.read_table(line.rstrip(), header=None, delimiter="\t")
-    #     columns = ['chr', 'start', 'end', 'name', 'score', 'expected', 'observed', 'status', 'others']
-    #     mutation.columns = columns
-    #
-    #     print("Merge the tables...")
-    #     merge_table = pd.merge(dbSNP,mutation,how='inner',left_on="name",right_on="name")
-    #
-    #     # Check if the mutations (column 6) are included in the observed cases for each SNP (column observed)
-    #     columns2 = ['chr', 'start', 'end', 'name', 'score_y', 'expected', 'observed_y', 'status', 'others', 'observed_x']
-    #     df = pd.DataFrame(index=xrange(0, len(merge_table.index)), columns=columns2)
-    #
-    #     cont = 0
-    #
-    #     for x in xrange(0, len(merge_table.index)):
-    #         if(merge_table["observed_y"][x] not in merge_table["observed_x"][x]):
-    #             df.ix[cont] = merge_table.ix[x][['chr', 'start', 'end', 'name', 'score_y', 'expected', 'observed_y', 'status', 'others', 'observed_x']]
-    #             cont = cont + 1
-    #
-    #     df = df[pd.notnull(df['chr'])]
-    #
-    #     #Save the file
-    #     print("Saving results...")
-    #     df.to_csv(line.rstrip()[:-4]+"_part1.bed", sep="\t")
-    #
-    # print("End of execution: "+time.strftime('%H:%M:%S'))
-
-
-
+    # 3. Close the output file
+    logger.info(str(cont) + " mutations filtered")
+    logger.info("Saved results in " + output_path)
+    outFile.close()
+    out_discardedFile.close()
 
 if __name__ == '__main__':
     try:
         main()
-        logger.info("Done.")
-
 
     except Exception as error:
         logger.error(repr(error))
