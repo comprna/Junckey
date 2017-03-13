@@ -57,7 +57,7 @@ def main():
 
         LeafCutter_path = args.leafcutter
         readCounts_path = args.readcounts
-        threshold = args.thresholdq
+        threshold = args.threshold
         output_path = args.output
 
         # LeafCutter_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/LeafCutter_output_RefSeq"
