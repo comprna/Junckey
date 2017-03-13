@@ -47,7 +47,7 @@ def main():
 
     psi_junctions_path = args.psi_junctions
     output_folder = args.output_folder
-    window = args.w
+    window = args.window
 
 
     try:
