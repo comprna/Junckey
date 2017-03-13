@@ -72,7 +72,7 @@ def main():
 
         for line in cluster_files:
 
-            logger.info("Loading file: " + line.rstrip() + "...\n")
+            logger.info("Loading file: " + line.rstrip() + "...")
             file = pd.read_table(line.rstrip(), header=None, delimiter=" ", compression='gzip', skiprows=1)
             #For each line, calculate the PSI normalizing across the total number of reads per cluster
             psi_list = []
@@ -138,7 +138,7 @@ def main():
         #3. Enrich the output. Get the Junction type and the associated genes
         #####################################################################
 
-        logger.info("Loading "+readCounts_path+"...\n")
+        logger.info("Loading "+readCounts_path+"...")
         readCounts = pd.read_table(readCounts_path, delimiter="\t")
 
         #Format previously the id. Add 1 to the end (Leafcutter adds 1 to the end cordinates)
