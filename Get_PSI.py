@@ -82,7 +82,7 @@ def main():
                 # #If the denominator is 0, skip this line
                 # if(float(aux[1])!=0):
                 #If the denominator is not over the threshold, don't generate PSI
-                if(float(aux[1])>=threshold):
+                if(float(aux[1])>=float(threshold)):
                     PSI = float(aux[0])/float(aux[1])
                 else:
                     PSI = "NaN"
