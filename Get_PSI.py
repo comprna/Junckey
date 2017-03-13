@@ -58,6 +58,7 @@ def main():
         LeafCutter_path = args.leafcutter
         readCounts_path = args.readcounts
         threshold = args.thresholdq
+        output_path = args.output
 
         # LeafCutter_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/LeafCutter_output_RefSeq"
         # readCounts_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_RefSeq.tab"
@@ -176,7 +177,6 @@ def main():
         file_merged_sorted = file_merged3.sort(['chr', 'cluster', 'start', 'end'])
 
         #Save the dataframe
-        output_path = LeafCutter_path + "/psi_all_samples.tab"
         logger.info("Creating file "+output_path+"...")
         file_merged_sorted.to_csv(output_path, sep="\t", index=False, na_rep='NaN')
 
