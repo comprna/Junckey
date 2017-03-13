@@ -49,6 +49,10 @@ def main():
     output_folder = args.output_folder
     window = args.window
 
+    # psi_junctions_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/Junctions_psi_clusters_SCLC_Ensembl_v2.tab"
+    # output_folder = "/genomics/users/juanluis/FastQTL_analysis/v3/SCLC/Junctions/tables"
+    # window = 100000
+
 
     try:
 
@@ -59,6 +63,7 @@ def main():
         # 2. Iterate trough the psi_junctions file getting the start and end of each cluster
         logger.info("Getting cluster sizes...")
         cluster_start, cluster_end, cluster_chr, cluster_strand = {}, {}, {}, {}
+        cont_errors = 0
         for i in range(len(psi_junctions)):
             # print("Linea: "+i+" --> "+psi_junctions["cluster"][i])
             # input()
@@ -79,22 +84,25 @@ def main():
                     logger.error("Different chromosomes in the same cluster!!"+cluster_chr[psi_junctions["cluster"][i]]+" and "+
                           psi_junctions["chr"][i])
                 if(cluster_strand[psi_junctions["cluster"][i]] != psi_junctions["strand"][i]):
-                    logger.error("Different strans in the same cluster!!"+cluster_strand[psi_junctions["cluster"][i]]+" and "+
-                          psi_junctions["strand"][i])
+                    cont_errors = cont_errors + 1
+                    logger.error("Removing cluster "+psi_junctions["cluster"][i]+" for having different strands")
+                    del cluster_start[psi_junctions["cluster"][i]]
+                    del cluster_end[psi_junctions["cluster"][i]]
+                    del cluster_chr[psi_junctions["cluster"][i]]
+                    del cluster_strand[psi_junctions["cluster"][i]]
 
         # 3. If the user had specified a window size, update the values of the clusters
         if(window!=0):
             logger.info("Adding window shift...")
             for key in sorted(cluster_start.keys()):
                 if(cluster_strand[key]=="+"):
-                    cluster_start[key] = cluster_start[key] - window
+                    cluster_start[key] = cluster_start[key] - int(window)
                     if (cluster_start[key]<0):
                         cluster_start[key] = 0
                 else:
-                    cluster_end[key] = cluster_end[key] + window
+                    cluster_end[key] = cluster_end[key] + int(window)
 
         # 4. Create the output file and output the results
-        logger.info("Saving results...")
         path = output_folder + "/length_clusters.tab"
         output_file = open(path, 'w')
 
@@ -105,6 +113,7 @@ def main():
         logger.info("Saved " + path)
         output_file.close()
 
+        logger.info("Removed "+str(cont_errors)+" clusters")
         logger.info("Done. Exiting program.")
 
         exit(0)
