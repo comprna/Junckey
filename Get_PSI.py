@@ -93,8 +93,8 @@ def main():
             file['PSI'] = psi_list
 
             #Save the dataframe
-            output_path = LeafCutter_path + "/" + line.rstrip().split("/").pop()
-            file.to_csv(output_path[:-3], sep=" ", index=False,  float_format='%.f', header=False)
+            output_path_aux = LeafCutter_path + "/" + line.rstrip().split("/").pop()
+            file.to_csv(output_path_aux[:-3], sep=" ", index=False,  float_format='%.f', header=False)
 
         #########################
         #2. Merge all the files #
@@ -155,8 +155,6 @@ def main():
 
         #Put it in the proper order for the vcf file
         sorted_columns = sorted(file_merged2.columns)
-
-        print(sorted_columns)
 
         # Remove the columns at the end and put it at the beginning
         sorted_columns.remove('cluster')
