@@ -26,7 +26,7 @@ echo "Sending jobs to gencluster..."
 cnt=0
 for sample in $(ls -d "$io_dir"/*);do
 	echo "Processing sample $sample..."
-	command="/projects_rg/SCLC_cohorts/scripts/format_STAR_output_per_sample.sh $(echo $sample) $(echo $gtf_dir)"
+	command="~/format_STAR_output_per_sample.sh $(echo $sample) $(echo $gtf_dir)"
 	qsub -N format_STAR_"$cnt" -S /bin/sh -cwd -q bigmem,long,normal -pe serial 2 -b y $command
 	cnt=$((cnt+1))
 done
