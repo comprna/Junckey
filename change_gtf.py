@@ -13,13 +13,13 @@ import time
 def main():
     try:
 
-        # geneAnnotated_path = sys.argv[1]
-        # junctions_path = sys.argv[2]
-        # output_path = sys.argv[3]
+        geneAnnotated_path = sys.argv[1]
+        junctions_path = sys.argv[2]
+        output_path = sys.argv[3]
 
-        geneAnnotated_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/aux.sorted.geneAnnotated.bed"
-        junctions_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_Ensembl.tab"
-        output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_RefSeq.tab"
+        # geneAnnotated_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/aux.sorted.geneAnnotated.bed"
+        # junctions_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_Ensembl.tab"
+        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_RefSeq.tab"
 
         print("Starting execution: "+time.strftime('%H:%M:%S')+"\n")
 
