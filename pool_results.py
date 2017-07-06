@@ -3,11 +3,11 @@ import os, sys, glob, math
 # TODO The rpkm.tab generation is actually commented because some error converting to int, fix this
 
 try:
-    inFilePattern = sys.argv[1]+"*/SJ.out.geneAnnotated.bed"
-    totalMappedReadsFilePath = sys.argv[1]+"totalMappedReads.tab"
-    averageLengthFilePath = sys.argv[1]+"averageLength.tab"
-    outCountsFilePath = sys.argv[1]+"readCounts.tab"
-    outRpkmFilePath = sys.argv[1]+"rpkm_final.tab"
+    inFilePattern = sys.argv[1]+"/*/SJ.out.geneAnnotated.bed"
+    totalMappedReadsFilePath = sys.argv[1]+"/totalMappedReads.tab"
+    averageLengthFilePath = sys.argv[1]+"/averageLength.tab"
+    outCountsFilePath = sys.argv[2]+"/readCounts.tab"
+    outRpkmFilePath = sys.argv[2]+"/rpkm_final.tab"
 
     # inFilePattern = "/projects_rg/Bellmunt/STAR/TEST/*/SJ.out.geneAnnotated.bed"
     # totalMappedReadsFilePath = "/projects_rg/Bellmunt/STAR/TEST/totalMappedReads.tab"

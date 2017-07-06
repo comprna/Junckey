@@ -17,9 +17,9 @@ def main():
         junctions_path = sys.argv[2]
         output_path = sys.argv[3]
 
-        # geneAnnotated_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/aux.sorted.geneAnnotated.bed"
-        # junctions_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_Ensembl.tab"
-        # output_path = "/projects_rg/SCLC_cohorts/George/PSI_Junction_Clustering/readCounts_SCLC_RefSeq.tab"
+        # geneAnnotated_path = "/genomics/users/juanluis/TEST/aux.sorted.geneAnnotated.bed"
+        # junctions_path = "/genomics/users/juanluis/TEST/Junctions_readCounts_TCGA.formatted.tab"
+        # output_path = "/genomics/users/juanluis/TEST/Junctions_readCounts_TCGA.formatted2.tab"
 
         print("Starting execution: "+time.strftime('%H:%M:%S')+"\n")
 
@@ -70,11 +70,11 @@ def main():
                 id_formatted = ":".join(tokens[0].split(";")[:-1])
                 if (id_formatted in dict_junction_gene):
                     tokens[6] = dict_junction_gene[id_formatted]
-                    tokens[5] = dict_junction_type[id_formatted]
+                    tokens[7] = dict_junction_type[id_formatted]
                 else:
                     #If the key doesn't exist, assign the junction to no gene and the junction type to 5 (new junction)
                     tokens[6] = ""
-                    tokens[5] = str(5)
+                    tokens[7] = str(5)
                 new_line = "\t".join(tokens)
                 outFile.write(new_line + "\n")
 

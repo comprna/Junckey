@@ -25,6 +25,12 @@ echo "Starting execution. "$(date)
 
 #Export this library for using R-3.3.2
 export LD_LIBRARY_PATH=/soft/devel/gcc-4.9.3/lib64:$LD_LIBRARY_PATH
+#Use this version with pandas
+export PATH=/soft/devel/python-2.7/bin:$PATH
+
+#Store the path where the scripts are
+MYSELF="$(readlink -f "$0")"
+MYDIR="${MYSELF%/*}"
 
 #1. Extract from the junctions_file the coordinates of the file and create a bed file
 path=$(dirname "${junctions_file}")
@@ -43,18 +49,18 @@ awk '{print $4,$17}' "$path"/aux.sorted.enriched.bed | sort -u > "$path"/aux.sor
 #Replace the junctions associated to genes "0" with a blank space
 sed -i -e 's/ 0/ "";/g' "$path"/aux.sorted.enriched.unique.bed
 #Associate the list of genes to each junction to the original bed file
-/soft/R/R-3.3.2/bin/Rscript /projects_rg/SCLC_cohorts/scripts/GenestoJunctions.R "$path"/aux.bed "$path"/aux.sorted.enriched.unique.bed "$path"/aux.sorted.enriched.filtered.bed "$path"/aux.sorted.geneAnnotated.bed
+/soft/R/R-3.3.2/bin/Rscript "$MYDIR"/GenestoJunctions_v2.R "$path"/aux.bed "$path"/aux.sorted.enriched.unique.bed "$path"/aux.sorted.enriched.filtered.bed "$path"/aux.junction.type.bed "$path"/aux.sorted.geneAnnotated.bed
 
 #4. Associate the genes of geneAnnotated.bed to the original junctions_file
-python /genomics/users/juanluis/comprna/Junckey/change_gtf.py "$path"/aux.sorted.geneAnnotated.bed "$junctions_file" "$path"/"$output_file"
+python "$MYDIR"/change_gtf.py "$path"/aux.sorted.geneAnnotated.bed "$junctions_file" "$output_file"
 
 #5. Remove the previous aux files
-rm "$path"/aux.bed
-rm "$path"/aux.sorted.bed
-rm "$path"/aux.sorted.enriched.bed
-rm "$path"/aux.sorted.enriched.filtered.bed
-rm "$path"/aux.sorted.enriched.unique.bed
-rm "$path"/aux.sorted.geneAnnotated.bed
+#rm "$path"/aux.bed
+#rm "$path"/aux.sorted.bed
+#rm "$path"/aux.sorted.enriched.bed
+#rm "$path"/aux.sorted.enriched.filtered.bed
+#rm "$path"/aux.sorted.enriched.unique.bed
+#rm "$path"/aux.sorted.geneAnnotated.bed
 
 echo "End of execution. "$(date)
 exit 0
