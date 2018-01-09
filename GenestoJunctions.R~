@@ -1,3 +1,5 @@
+#!/soft/R/R-3.3.2/bin/Rscript
+
 #GenestoJunctions.R: The next code will get the unique genes associated to each junction and will associate this list of genes to each junctions in the original bed file
 #Additionally, we will study the type of each junction (1: Annotated, 2: New connection, 3: 5ss, 4: 3ss, 5: New junction)
 #arg[1]: Input file --> SJ.out.bed: file with all the junctions

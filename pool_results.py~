@@ -1,7 +1,5 @@
 import os, sys, glob, math
 
-# TODO The rpkm.tab generation is actually commented because some error converting to int, fix this
-
 try:
     inFilePattern = sys.argv[1]+"/*/SJ.out.geneAnnotated.bed"
     totalMappedReadsFilePath = sys.argv[1]+"/totalMappedReads.tab"
@@ -63,7 +61,6 @@ try:
 
     outCountsFile = open(outCountsFilePath, 'w')
     outCountsFile.write("\t".join(headerItems) + "\n")
-
     outRpkmFile = open(outRpkmFilePath, 'w')
     outRpkmFile.write("\t".join(headerItems) + "\n")
 

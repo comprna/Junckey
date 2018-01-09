@@ -84,7 +84,7 @@ print("Done")
 
 #Call the next python script for obtaining the type of our junctions
 work.dir <- getwd()
-system(paste0("/soft/devel/python-2.7/bin/python ","/genomics/users/juanluis/comprna/Junckey/GenestoJunctions.py ",CHARACTER_command_args[3], " ",CHARACTER_command_args[4]))
+system(paste0("python ","/genomics/users/juanluis/comprna/Junckey/GenestoJunctions.py ",CHARACTER_command_args[3], " ",CHARACTER_command_args[4]))
 
 output_df <- as.data.frame(fread(CHARACTER_command_args[4],header = FALSE))
 #Associate this info to the original bed file

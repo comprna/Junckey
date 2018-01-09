@@ -52,7 +52,7 @@ sed -i -e 's/ 0/ "";/g' "$sample"/SJ.out.enriched.unique.bed
 #/soft/R/R-3.3.2/bin/Rscript "$MYDIR"/GenestoJunctions.R "$sample"/SJ.out.bed "$sample"/SJ.out.enriched.unique.bed "$sample"/SJ.out.enriched.filtered.bed "$sample"/SJ.out.geneAnnotated.bed
 
 #Associate the list of genes to each junction to the original bed file
-/soft/R/R-3.3.2/bin/Rscript "$MYDIR"/GenestoJunctions_v2.R "$sample"/SJ.out.bed "$sample"/SJ.out.enriched.unique.bed "$sample"/SJ.out.enriched.filtered.bed "$sample"/SJ.out.junction.type.bed "$sample"/SJ.out.geneAnnotated.bed
+/soft/R/R-3.3.2/bin/Rscript "$MYDIR"/GenestoJunctions_v2.R "$sample"/SJ.out.bed "$sample"/SJ.out.enriched.unique.bed "$sample"/SJ.out.enriched.filtered.bed "$sample"/SJ.out.junction.type.bed "$sample"/SJ.out.geneAnnotated2.bed
 
 echo "End of execution. "$(date)
 exit 0

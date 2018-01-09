@@ -13,8 +13,6 @@ arg[4]: Output file --> SJ.out.geneAnnotated.bed: input file with the list of ge
 
 import logging, sys
 import pandas as pd
-import re
-
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -62,8 +60,8 @@ def main():
         original_file_bed_filtered_path = sys.argv[1]
         output_path = sys.argv[2]
 
-        # original_file_bed_filtered_path = "/genomics/users/juanluis/TEST/aux.sorted.enriched.filtered.bed"
-        # output_path = "/genomics/users/juanluis/TEST/aux.sorted.geneAnnotated.bed"
+        # original_file_bed_filtered_path = "/projects_rg/SCLC_cohorts/George/STAR/v2/S01366/SJ.out.TEST.bed"
+        # output_path = "/projects_rg/SCLC_cohorts/George/STAR/v2/S01366/SJ.out.geneAnnotated2.bed"
 
         # 1. Load the intersect file between the junctions and the annotation
         original_file_bed_filtered = pd.read_table(original_file_bed_filtered_path, delimiter="\t", header=None)
@@ -73,7 +71,7 @@ def main():
 
         # 2. Get the transcript and exon_number info
         transcript_id = original_file_bed_filtered['large_info'].apply(lambda x: x.split(";")[1][16:31]).tolist()
-        exon_number = original_file_bed_filtered['large_info'].apply(lambda x: x.split(";")[2][14]).tolist()
+        exon_number = original_file_bed_filtered['large_info'].apply(lambda x: x.split(";")[2].split("\"")[1]).tolist()
 
         #Iterate over the genotype file
         flag_Anno, flag_5s, flag_3s= 0, 0, 0
@@ -88,15 +86,25 @@ def main():
             if(i==0):
                 id = original_file_bed_filtered.iloc[i,3]
             elif(id!=original_file_bed_filtered.iloc[i,3]):
+                # # Case 1: Annotated junction
+                # if(flag_Anno==1):
+                #     output_file.write(id+"\t1\n")
+                # # Case 2: New connection (from annotated exons)
+                # elif(flag_5s==1 & flag_3s==1):
+                #     #If there are two exons folowwing each other, then it's a case 1
+                #     if(consecutives_exons(transcript_dict)):
+                #         output_file.write(id + "\t1\n")
+                #     else:
+                #         output_file.write(id+"\t2\n")
                 # Case 1: Annotated junction
-                if(flag_Anno==1):
-                    output_file.write(id+"\t1\n")
-                # Case 2: New connection (from annotated exons)
-                elif(flag_5s==1 & flag_3s==1):
+
+                if(flag_5s==1 & flag_3s==1):
                     #If there are two exons folowwing each other, then it's a case 1
                     if(consecutives_exons(transcript_dict)):
+                        # Case 1: Annotated junction
                         output_file.write(id + "\t1\n")
                     else:
+                        # Case 2: New connection (from annotated exons)
                         output_file.write(id+"\t2\n")
                 # Case 3: A5ss
                 elif (flag_5s == 1 and flag_3s == 0):
@@ -111,9 +119,10 @@ def main():
                 flag_Anno, flag_5s, flag_3s = 0, 0, 0
                 transcript_dict = {}
             # Check the new line
-            if(original_file_bed_filtered.iloc[i,6]==1):
-                flag_Anno = 1
-            elif (original_file_bed_filtered.iloc[i,1]==original_file_bed_filtered.iloc[i,11]-1):
+            # if(original_file_bed_filtered.iloc[i,6]==1):
+            #     flag_Anno = 1
+            # elif (original_file_bed_filtered.iloc[i,1]==original_file_bed_filtered.iloc[i,11]-1):
+            if (original_file_bed_filtered.iloc[i, 1] == original_file_bed_filtered.iloc[i, 11] - 1):
                 flag_5s = 1
                 #Save the transcript id and the exon number
                 #If the key already exists, add it to the list of exons

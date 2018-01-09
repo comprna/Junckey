@@ -2,6 +2,8 @@
 # format_STAR_output_pipeline_cluster_part1.sh
 #$ -S /bin/sh
 #$ -N format_STAR_output_pipeline_cluster_part1
+#$ -pe serial 2
+#$ -q normal
 #$ -cwd
 #
 # ==============================================================================================
