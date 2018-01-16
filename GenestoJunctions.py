@@ -4,15 +4,14 @@
 
 GenestoJunctions.py: The next code will get the unique genes associated to each junction and will associate this list of genes to each junctions in the original bed file
 Additionally, we will study the type of each junction (1: Annotated, 2: New connection, 3: 5ss, 4: 3ss, 5: New junction)
-arg[1]: Input file --> SJ.out.bed: file with all the junctions
-arg[2]: Input file --> SJ.out.enriched.unique.bed: file with the junctions which falls in exons, according to the annotation
-arg[3]: Input file --> SJ.out.enriched.filtered.bed: file with the exons that overlaps exactly with the junction
-arg[4]: Output file --> SJ.out.geneAnnotated.bed: input file with the list of genes per junction and the type of each junction
+arg[1]: Input file --> SJ.out.enriched.filtered.bed: file with the exons that overlaps exactly with the junction
+arg[2]: Output file --> SJ.out.junction.type: output file with the list junction and the type of each junction
 
 """
 
 import logging, sys
 import pandas as pd
+import re
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -60,8 +59,9 @@ def main():
         original_file_bed_filtered_path = sys.argv[1]
         output_path = sys.argv[2]
 
-        # original_file_bed_filtered_path = "/projects_rg/SCLC_cohorts/George/STAR/v2/S01366/SJ.out.TEST.bed"
-        # output_path = "/projects_rg/SCLC_cohorts/George/STAR/v2/S01366/SJ.out.geneAnnotated2.bed"
+        # original_file_bed_filtered_path = "/projects_rg/Omar/SF3B1_mouse/STAR/Double_IGO_07682_4_S134_L005/SJ.out.enriched.filtered.bed.TEST"
+        # output_path = "/projects_rg/Omar/SF3B1_mouse/STAR/Double_IGO_07682_4_S134_L005/SJ.out.junction.type2.bed"
+
 
         # 1. Load the intersect file between the junctions and the annotation
         original_file_bed_filtered = pd.read_table(original_file_bed_filtered_path, delimiter="\t", header=None)
@@ -70,8 +70,10 @@ def main():
                                               'dot2', 'large_info', 'score2']
 
         # 2. Get the transcript and exon_number info
-        transcript_id = original_file_bed_filtered['large_info'].apply(lambda x: x.split(";")[1][16:31]).tolist()
-        exon_number = original_file_bed_filtered['large_info'].apply(lambda x: x.split(";")[2].split("\"")[1]).tolist()
+        # transcript_id = original_file_bed_filtered['large_info'].apply(lambda x: x.split(";")[1][16:31]).tolist()
+        transcript_id = original_file_bed_filtered['large_info'].apply(lambda x: x.split("transcript_id")[1].split(";")[0].strip().replace('\"','')).tolist()
+        # exon_number = original_file_bed_filtered['large_info'].apply(lambda x: x.split(";")[2].split("\"")[1]).tolist()
+        exon_number = original_file_bed_filtered['large_info'].apply(lambda x: x.split("exon_number")[1].split(";")[0].strip().replace('\"','')).tolist()
 
         #Iterate over the genotype file
         flag_Anno, flag_5s, flag_3s= 0, 0, 0
