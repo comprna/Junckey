@@ -1,5 +1,3 @@
-#!/soft/R/R-3.3.2/bin/Rscript
-
 #GenestoJunctions_v2.R: The next code will get the unique genes associated to each junction and will associate this list of genes to each junctions in the original bed file
 #Additionally, we will study the type of each junction (1: Annotated, 2: New connection, 3: 5ss, 4: 3ss, 5: New junction)
 #V2: This version has been adapted for been used for change_gtf.sh
@@ -84,7 +82,7 @@ print("Done")
 
 #Call the next python script for obtaining the type of our junctions
 work.dir <- getwd()
-system(paste0("/soft/devel/python-2.7/bin/python ","/genomics/users/juanluis/comprna/Junckey/GenestoJunctions.py ",CHARACTER_command_args[3], " ",CHARACTER_command_args[4]))
+system(paste0("python ","/genomics/users/juanluis/comprna/Junckey/GenestoJunctions.py ",CHARACTER_command_args[3], " ",CHARACTER_command_args[4]))
 
 output_df <- as.data.frame(fread(CHARACTER_command_args[4],header = FALSE))
 #Associate this info to the original bed file
