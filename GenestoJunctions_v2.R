@@ -27,7 +27,7 @@ original_file_bed <- fread(CHARACTER_command_args[2])
 colnames(original_file_bed) <- c("chrom","start","end","id","unique_junction_reads","strand","annotated")
 original_file_bed <- as.data.frame(original_file_bed)
 
-file_unique <- fread(CHARACTER_command_args[3],header=FALSE,sep=" ")
+file_unique <- fread(CHARACTER_command_args[3],header=FALSE,sep=" ",quote="")
 # file_unique <- fread("/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.enriched.unique.bed",header=FALSE,sep=" ")
 file_unique <- as.data.frame(file_unique)
 

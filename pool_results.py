@@ -9,15 +9,15 @@ try:
     outCountsFilePath = sys.argv[2]+"/readCounts.tab"
     # outRpkmFilePath = sys.argv[2]+"/rpkm_final.tab"
 
-    # inFilePattern = "/projects_rg/Bellmunt/STAR/TEST/*/SJ.out.geneAnnotated.bed"
+    inFilePattern = "/projects_rg/Junckey_TEST/*/SJ.out.geneAnnotated.bed"
     # totalMappedReadsFilePath = "/projects_rg/Bellmunt/STAR/TEST/totalMappedReads.tab"
     # averageLengthFilePath = "/projects_rg/Bellmunt/STAR/TEST/averageLength.tab"
-    # outCountsFilePath = "/projects_rg/Bellmunt/STAR/TEST/readCounts_final.tab"
+    outCountsFilePath = "/projects_rg/Junckey_TEST/readCounts_final.tab"
     # outRpkmFilePath = "/projects_rg/Bellmunt/STAR/TEST/rpkm_final.tab"
 
     inFilePaths = glob.glob(inFilePattern)
 
-    print("\tpool_results.py:Pooling data...")
+    print("\tpool_results.py: Pooling data...")
 
     metaDict = {}
     countDict = {}
