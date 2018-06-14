@@ -178,7 +178,9 @@ def main():
         del file_merged3["id2"]
 
         #Sort the file
-        file_merged_sorted = file_merged3.sort(['chr', 'cluster', 'start', 'end'])
+        # file_merged_sorted = file_merged3.sort(['chr', 'cluster', 'start', 'end'])   #DEPRECATED
+        file_merged_sorted = file_merged3.sort_values(['chr', 'cluster', 'start', 'end'])
+
 
         #Save the dataframe
         logger.info("Creating file "+output_path+"...")

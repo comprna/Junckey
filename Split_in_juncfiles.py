@@ -23,7 +23,8 @@ def main():
         readCounts_file = pd.read_table(readCounts_path, delimiter="\t")
         path = readCounts_path.split("/")
         del path[-1]
-        path2 = "/".join(path)+"/Junc_files"
+#        path2 = "/".join(path)+"/Junc_files"
+        path2 = sys.argv[2]
 
         # 2. Per column, we will create a data frame and save it
         #Create the directory, if it doesn't exist
