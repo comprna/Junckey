@@ -88,11 +88,14 @@ colnames(original_file_bed_final)[8] <- "Associated_genes"
 #Call the next python script for obtaining the type of our junctions
 work.dir <- getwd()
 system(paste0("python ", scripts_path, "/GenestoJunctions.py ",CHARACTER_command_args[4], " ",CHARACTER_command_args[5]))
-output_df <- as.data.frame(fread(CHARACTER_command_args[5],header = FALSE))
+# system(paste0("python ", scripts_path, "/GenestoJunctions.py ","/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.enriched.filtered.bed"," ","/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.junction.type.bed"))
+output_df <- as.data.frame(fread(CHARACTER_command_args[5],header = FALSE,sep="\t"))
+# output_df <- as.data.frame(fread("/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.junction.type.bed",header = FALSE,sep="\t"))
 #Associate this info to the original bed file
 original_file_bed_final2 <- merge(original_file_bed_final,output_df,by.x="id",by.y="V1",all.x=TRUE)
 colnames(original_file_bed_final2)[9] <- "Type_junction"
 original_file_bed_final2$Type_junction <- ifelse(is.na(original_file_bed_final2$Type_junction),5,original_file_bed_final2$Type_junction)
 write.table(original_file_bed_final2,file=CHARACTER_command_args[6],sep="\t",quote=FALSE,row.names=FALSE)
+# write.table(original_file_bed_final2,file="/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.geneAnnotated.bed",sep="\t",quote=FALSE,row.names=FALSE)
 cat("\tGenestoJunctions_v2.R: Saved SJ.out.geneAnnotated.bed\n")
 cat("\tGenestoJunctions_v2.R: Finish\n")
