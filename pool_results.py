@@ -4,10 +4,10 @@ import os, sys, glob, math
 
 try:
     inFilePattern = sys.argv[1]+"/*/SJ.out.geneAnnotated.bed"
-    totalMappedReadsFilePath = sys.argv[1]+"/totalMappedReads.tab"
-    averageLengthFilePath = sys.argv[1]+"/averageLength.tab"
+    # totalMappedReadsFilePath = sys.argv[1]+"/totalMappedReads.tab"
+    # averageLengthFilePath = sys.argv[1]+"/averageLength.tab"
     outCountsFilePath = sys.argv[2]+"/readCounts.tab"
-    outRpkmFilePath = sys.argv[2]+"/rpkm_final.tab"
+    # outRpkmFilePath = sys.argv[2]+"/rpkm_final.tab"
 
     # inFilePattern = "/projects_rg/Bellmunt/STAR/TEST/*/SJ.out.geneAnnotated.bed"
     # totalMappedReadsFilePath = "/projects_rg/Bellmunt/STAR/TEST/totalMappedReads.tab"
@@ -17,7 +17,7 @@ try:
 
     inFilePaths = glob.glob(inFilePattern)
 
-    print ("Pooling data...")
+    print("\tpool_results.py:Pooling data...")
 
     metaDict = {}
     countDict = {}
@@ -51,23 +51,23 @@ try:
     for item in sorted(samples):
         headerItems.append(item)
 
-    totalMappedReads = {}
-    for line in open(totalMappedReadsFilePath):
-        lineitems = line.rstrip().split("\t")
-        totalMappedReads[lineitems[0]] = lineitems[1]
-
-    averageLength = {}
-    for line in open(averageLengthFilePath):
-        lineitems = line.rstrip().split("\t")
-        averageLength[lineitems[0]] = lineitems[1]
+    # totalMappedReads = {}
+    # for line in open(totalMappedReadsFilePath):
+    #     lineitems = line.rstrip().split("\t")
+    #     totalMappedReads[lineitems[0]] = lineitems[1]
+    #
+    # averageLength = {}
+    # for line in open(averageLengthFilePath):
+    #     lineitems = line.rstrip().split("\t")
+    #     averageLength[lineitems[0]] = lineitems[1]
 
     outCountsFile = open(outCountsFilePath, 'w')
     outCountsFile.write("\t".join(headerItems) + "\n")
 
-    outRpkmFile = open(outRpkmFilePath, 'w')
-    outRpkmFile.write("\t".join(headerItems) + "\n")
+    # outRpkmFile = open(outRpkmFilePath, 'w')
+    # outRpkmFile.write("\t".join(headerItems) + "\n")
 
-    print ("There are %d genes to calculate" % len(metaDict))
+    print("\tpool_results.py: There are %d genes to calculate" % len(metaDict))
     print ("")
 
     i = 1
@@ -75,29 +75,29 @@ try:
         sys.stdout.write("\rCurrently on: %d" % i,)
         sys.stdout.flush()
         outCountsRow = list(metaDict[rowID])
-        outRpkmRow = list(metaDict[rowID])
+        # outRpkmRow = list(metaDict[rowID])
         for sampleID in headerItems[8:]:
             sampleCount = "0"
-            rpkm = "0"
+            # rpkm = "0"
             if sampleID in countDict[rowID]:
                 sampleCount = countDict[rowID][sampleID]
-                tmr = float(totalMappedReads[sampleID])
-                al = float(averageLength[sampleID])
-                rpkm = "%.9f" % ((math.pow(10,9) * float(sampleCount)) / (tmr * al))
+                # tmr = float(totalMappedReads[sampleID])
+                # al = float(averageLength[sampleID])
+                # rpkm = "%.9f" % ((math.pow(10,9) * float(sampleCount)) / (tmr * al))
             outCountsRow.append(sampleCount)
-            outRpkmRow.append(rpkm)
+            # outRpkmRow.append(rpkm)
         outCountsFile.write("\t".join(outCountsRow) + "\n")
-        outRpkmFile.write("\t".join(outRpkmRow) + "\n")
+        # outRpkmFile.write("\t".join(outRpkmRow) + "\n")
         i += 1
 
     i -= 1
-    sys.stdout.write("\rCurrently on: %d\n" % i, )
+    sys.stdout.write("\t\rCurrently on: %d\n" % i, )
     outCountsFile.close()
-    print("Generated file "+outCountsFilePath)
-    outRpkmFile.close()
-    print("Generated file " + outRpkmFilePath)
+    print("\tpool_results.py: Generated file "+outCountsFilePath)
+    # outRpkmFile.close()
+    # print("pool_results.py: Generated file " + outRpkmFilePath)
 
 except Exception as error:
     print('\nERROR: ' + repr(error))
-    print("Aborting execution")
+    print("\tpool_results.py: Aborting execution")
     sys.exit(1)

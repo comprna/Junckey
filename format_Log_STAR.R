@@ -1,5 +1,3 @@
-#!/soft/R/R-3.2.3/bin/Rscript
-
 #Get the total mapped reads per sample and the average_length. Given the input of 
 # all the Log.final.out files from STAR output, this script will generate the next output:
 #   -   totalMappedReads.tab 
@@ -24,5 +22,5 @@ for(i in 1:length(log_files)){
 }
 
 #Generate the output
-write.table(total_mapped_reads,file=paste0(CHARACTER_command_args[1],"totalMappedReads.tab"),sep="\t",quote=FALSE,row.names = FALSE, col.names = FALSE)
-write.table(average_length,file=paste0(CHARACTER_command_args[1],"averageLength.tab"),sep="\t",quote=FALSE,row.names = FALSE, col.names = FALSE)
+write.table(total_mapped_reads,file=paste0(CHARACTER_command_args[2],"totalMappedReads.tab"),sep="\t",quote=FALSE,row.names = FALSE, col.names = FALSE)
+write.table(average_length,file=paste0(CHARACTER_command_args[2],"averageLength.tab"),sep="\t",quote=FALSE,row.names = FALSE, col.names = FALSE)
