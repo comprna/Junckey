@@ -27,8 +27,7 @@
 
 sample=$1
 gtf_dir=$2
-output_dir=$3
-scripts_dir=$4
+scripts_dir=$3
 
 module load R
 module load RStudio
@@ -40,7 +39,7 @@ echo "format_STAR_output_per_sample_slurm: Processing sample $sample..."
 
 #Store the path where the scripts are
 MYSELF="$(readlink -f "$0")"
-MYDIR="${MYSELF%/*}"
+output_dir="${MYSELF%/*}"
 
 #1. Convert the output file from STAR with the junctions to bed format
 echo "format_STAR_output_per_sample_slurm: Converting to BED $sample... "
