@@ -52,7 +52,7 @@ def main():
 
     try:
 
-        print('\t\tGenestoJunctions.py: Starting execution ')
+        print('\t\tGenestoJunctions.py: Starting')
 
         # Load the fasta file
         original_file_bed_filtered_path = sys.argv[1]
@@ -81,7 +81,7 @@ def main():
         output_file = open(output_path, 'w')
         for i in range(len(original_file_bed_filtered)):
             percentage = str(round(i*100/len(original_file_bed_filtered),3))+ "%"
-            sys.stdout.write("\r%s" % percentage)
+            sys.stdout.write("\t\t\r%s" % percentage)
             sys.stdout.flush()
             line = original_file_bed_filtered.iloc[i,]
             if(i==0):
