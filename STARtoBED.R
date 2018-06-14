@@ -1,11 +1,12 @@
-#!/soft/R/R-3.2.3/bin/Rscript
 
 #The next code will convert the sjcount file from STAR output to BED
 #We will modify the start and end cordinates for making them coincide with the exon cordinates of the gtf annotation. We will substract 2 to the start and add 1 to the end
 #arg[1]: sjcount file
 #arg[2]: output file
 
-require(data.table)
+cat("\tSTARtoBED.R: Starting\n")
+
+suppressMessages(require(data.table))
 
 CHARACTER_command_args <- commandArgs(trailingOnly=TRUE)
 
@@ -28,5 +29,6 @@ sj_count_filter2 <- sj_count_filter[,c("chrom","first_bp_intron","last_bp_intron
 
 #save the file
 write.table(sj_count_filter2,file=CHARACTER_command_args[2],sep="\t",row.names=FALSE,col.names=FALSE,quote=FALSE)
-
+cat("\tSTARtoBED.R: Created SJ.out.bed\n")
+cat("\tSTARtoBED.R: Finish\n")
 

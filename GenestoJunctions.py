@@ -11,7 +11,6 @@ arg[2]: Output file --> SJ.out.junction.type: output file with the list junction
 
 import logging, sys
 import pandas as pd
-import re
 
 # create logger
 logger = logging.getLogger(__name__)
@@ -53,7 +52,7 @@ def main():
 
     try:
 
-        logger.info('Starting execution GenestoJunctions.py')
+        print('\t\tGenestoJunctions.py: Starting execution ')
 
         # Load the fasta file
         original_file_bed_filtered_path = sys.argv[1]
@@ -147,16 +146,16 @@ def main():
         sys.stdout.write("\r%s" % percentage)
 
         # 3. Close the file handler
-        logger.info('Saved ' + output_path)
+        print('\t\tGenestoJunctions.py: Saved ' + output_path)
         output_file.close()
 
-        logger.info('Done. Exiting program.')
+        print('\t\tGenestoJunctions.py: Finish')
 
         exit(0)
 
     except Exception as error:
         logger.error('\nERROR: ' + repr(error))
-        logger.error('Aborting execution')
+        logger.error('\t\tGenestoJunctions.py: Aborting execution')
         exit(1)
 
 
