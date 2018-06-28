@@ -53,7 +53,6 @@ colnames(matrix_output) <- c("Id","Genes")
 cont <- 1
 i <- 1
 for(i in 1:nrow(duplicated_ids2_sorted)){
-  print(paste0(cont,":",i))
   if(i==1){
     id <- as.character(duplicated_ids2_sorted[i,]$V1)
     list_genes <- as.character(duplicated_ids2_sorted[i,]$V2)

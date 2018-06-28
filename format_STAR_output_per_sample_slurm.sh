@@ -31,7 +31,7 @@ scripts_dir=$3
 module load R
 module load RStudio
 module load BEDTools
-module load Python/2.7.11
+module load Python/2.7.9
 
 echo "Starting execution. "$(date)
 echo "format_STAR_output_per_sample_slurm: Processing sample $sample..."
@@ -65,7 +65,7 @@ awk '{print $4,$17}' "$sample"/SJ.out.enriched.bed | sort -u > "$sample"/SJ.out.
 sed -i -e 's/ 0/ "";/g' "$sample"/SJ.out.enriched.unique.bed
 #3.4. Associate the list of genes to each junction to the original bed file
 #Rscript "$scripts_dir"/GenestoJunctions_v2.R $(echo $scripts_dir) "$output_dir"/$(echo ${sample##*/})/SJ.out.bed "$output_dir"/$(echo ${sample##*/})/SJ.out.enriched.unique.bed "$output_dir"/$(echo ${sample##*/})/SJ.out.enriched.filtered.bed "$output_dir"/$(echo ${sample##*/})/SJ.out.junction.type.bed "$output_dir"/$(echo ${sample##*/})/SJ.out.geneAnnotated.bed
-Rscript "$scripts_dir"/GenestoJunctions_v2.R $(echo $scripts_dir) "$sample"/SJ.out.bed "$sample"/SJ.out.enriched.unique.bed "$sample"/SJ.out.enriched.filtered.bed "$output_dir"/$(echo ${sample##*/})/SJ.out.junction.type.bed "$output_dir"/$(echo ${sample##*/})/SJ.out.geneAnnotated.bed
+Rscript "$scripts_dir"/GenestoJunctions_v2.R $(echo $scripts_dir) "$sample"/SJ.out.bed "$sample"/SJ.out.enriched.unique.bed "$sample"/SJ.out.enriched.filtered.bed "$sample"/SJ.out.junction.type.bed "$sample"/SJ.out.geneAnnotated.bed
 
 echo "End of execution. "$(date)
 exit 0
