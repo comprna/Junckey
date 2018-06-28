@@ -89,7 +89,7 @@ colnames(original_file_bed_final)[8] <- "Associated_genes"
 
 #Call the next python script for obtaining the type of our junctions
 work.dir <- getwd()
-system(paste0("python ", scripts_path, "/GenestoJunctions.py ",CHARACTER_command_args[4], " ",CHARACTER_command_args[5]))
+system(paste0("module load Python; python ", scripts_path, "/GenestoJunctions.py ",CHARACTER_command_args[4], " ",CHARACTER_command_args[5],"; module unload Python;"))
 # system(paste0("python ", scripts_path, "/GenestoJunctions.py ","/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.enriched.filtered.bed"," ","/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.junction.type.bed"))
 output_df <- as.data.frame(fread(CHARACTER_command_args[5],header = FALSE,sep="\t"))
 # output_df <- as.data.frame(fread("/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.junction.type.bed",header = FALSE,sep="\t"))
