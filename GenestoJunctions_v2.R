@@ -23,12 +23,12 @@ scripts_path <- CHARACTER_command_args[1]
 # scripts_path <- "/genomics/users/juanluis/comprna/Junckey"
 
 original_file_bed <- fread(CHARACTER_command_args[2])
-# original_file_bed <- fread("/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.bed")
+# original_file_bed <- fread("/projects_rg/SCM/tables_out2/TCGA-05-4244-01A-01R-1107-07/SJ.out.bed")
 colnames(original_file_bed) <- c("chrom","start","end","id","unique_junction_reads","strand","annotated")
 original_file_bed <- as.data.frame(original_file_bed)
 
 file_unique <- fread(CHARACTER_command_args[3],header=FALSE,sep=" ",quote="")
-# file_unique <- fread("/projects_rg/SCLC_cohorts/George/STAR/v2/S00035T/SJ.out.enriched.unique.bed",header=FALSE,sep=" ")
+# file_unique <- fread("/projects_rg/SCM/tables_out2/TCGA-05-4244-01A-01R-1107-07/SJ.out.enriched.unique.bed",header=FALSE,sep=" ")
 file_unique <- as.data.frame(file_unique)
 
 #Remove the " and ; from the genes column
@@ -41,7 +41,9 @@ file_unique_f <- file_unique[which(file_unique$V2!="0"),]
 table <- table(as.character(file_unique_f$V1))
 duplicated_ids <- row.names(table[which(table!=1)])
 duplicated_ids2 <- file_unique_f[which(as.character(file_unique_f$V1)%in%duplicated_ids),]
-table2 <- table(as.character(duplicated_ids2$V1))
+#Sort the file by V1
+duplicated_ids2_sorted <- duplicated_ids2[order(duplicated_ids2$V1),]
+table2 <- table(as.character(duplicated_ids2_sorted$V1))
 
 #For each id, take all the id genes and paste it in one line
 id <- ""
@@ -50,20 +52,21 @@ matrix_output <- matrix(data="",nrow=length(table2),ncol=2)
 colnames(matrix_output) <- c("Id","Genes")
 cont <- 1
 i <- 1
-for(i in 1:nrow(duplicated_ids2)){
+for(i in 1:nrow(duplicated_ids2_sorted)){
+  print(paste0(cont,":",i))
   if(i==1){
-    id <- as.character(duplicated_ids2[i,]$V1)
-    list_genes <- as.character(duplicated_ids2[i,]$V2)
+    id <- as.character(duplicated_ids2_sorted[i,]$V1)
+    list_genes <- as.character(duplicated_ids2_sorted[i,]$V2)
   }
-  else if(id!=as.character(duplicated_ids2[i,]$V1)){
+  else if(id!=as.character(duplicated_ids2_sorted[i,]$V1)){
     matrix_output[cont,1] <- id
     matrix_output[cont,2] <- list_genes
     cont <- cont + 1
-    id <- as.character(duplicated_ids2[i,]$V1)
-    list_genes <- as.character(duplicated_ids2[i,]$V2)
+    id <- as.character(duplicated_ids2_sorted[i,]$V1)
+    list_genes <- as.character(duplicated_ids2_sorted[i,]$V2)
   }
   else{
-    list_genes <- paste0(list_genes,",",as.character(duplicated_ids2[i,]$V2))
+    list_genes <- paste0(list_genes,",",as.character(duplicated_ids2_sorted[i,]$V2))
   }
 }
 matrix_output[cont,1] <- id
