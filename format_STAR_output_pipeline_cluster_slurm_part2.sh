@@ -11,7 +11,7 @@
 i_dir=$1
 o_dir=$2
 #i_dir2=$3
-#scripts_dir=$4
+scripts_dir=$3
 
 module load R
 module load RStudio
@@ -20,11 +20,9 @@ module load Python
 
 echo "format_STAR_output_pipeline_cluster_slurm_part2: Starting execution. "$(date)
 
-#Store the path where the scripts are
-#MYSELF="$(readlink -f "$0")"
-#MYDIR="${MYSELF%/*}"
-scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
+#Store the path where the scripts are (not working in slurm)
+MYSELF="$(readlink -f "$0")"
+MYDIR="${MYSELF%/*}"
 
 # TODO Problems in rpkm.tab generation on pool_results. This step is not necessary until this part is not fixed
 #1. Format the Log.Final.out files
@@ -33,7 +31,6 @@ scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #2. Pool the reads from all the samples in one file
 echo "format_STAR_output_pipeline_cluster_slurm_part2: Gathering all files into one..."
-echo "$scripts_dir"/pool_results.py "$i_dir" "$o_dir"
 python "$scripts_dir"/pool_results.py "$i_dir" "$o_dir"
 
 echo "format_STAR_output_pipeline_cluster_slurm_part2: End of execution. "$(date)
