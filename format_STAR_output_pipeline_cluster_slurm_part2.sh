@@ -14,7 +14,7 @@ o_dir=$2
 scripts_dir=$3
 
 module load R
-module load RStudio
+module load Rstudio
 module load BEDTools
 module load Python
 
