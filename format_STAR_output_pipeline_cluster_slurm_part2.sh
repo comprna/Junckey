@@ -33,6 +33,7 @@ scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 #2. Pool the reads from all the samples in one file
 echo "format_STAR_output_pipeline_cluster_slurm_part2: Gathering all files into one..."
+echo "$scripts_dir"/pool_results.py "$i_dir" "$o_dir"
 python "$scripts_dir"/pool_results.py "$i_dir" "$o_dir"
 
 echo "format_STAR_output_pipeline_cluster_slurm_part2: End of execution. "$(date)
