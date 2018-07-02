@@ -21,8 +21,8 @@ module load Python
 echo "format_STAR_output_pipeline_cluster_slurm_part2: Starting execution. "$(date)
 
 #Store the path where the scripts are
-MYSELF="$(readlink -f "$0")"
-MYDIR="${MYSELF%/*}"
+#MYSELF="$(readlink -f "$0")"
+#MYDIR="${MYSELF%/*}"
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
