@@ -16,15 +16,18 @@ def main():
     try:
 
         readCounts_path = sys.argv[1]
-        # readCounts_path = "/projects_rg/Annotation/Junctions/test.tab"
+        output_path = sys.argv[2]
+        #
+        # readCounts_path = "/projects_rg/SCM/tables/readCounts_LUAD_LUSC_Junckey.tab"
+        # output_path = "/home/juanluis/Desktop/Work/Junc_files_aux"
 
         # 1. Load the junction file with pandas
         print("Loading phenotype...")
-        readCounts_file = pd.read_table(readCounts_path, delimiter="\t")
+        readCounts_file = pd.read_table(readCounts_path, delimiter="\t", nrows=100)
         path = readCounts_path.split("/")
         del path[-1]
 #        path2 = "/".join(path)+"/Junc_files"
-        path2 = sys.argv[2]
+        path2 = output_path
 
         # 2. Per column, we will create a data frame and save it
         #Create the directory, if it doesn't exist
@@ -34,7 +37,7 @@ def main():
         path_index = path2 + "/index_juncfiles.txt"
         index_file = open(path_index, "w")
         for i in range(8,len(readCounts_file.columns)):
-            # print(i)
+            print(i)
             list = [1,2,3,4]
             list.insert(3, i)
             aux_df = readCounts_file.iloc[:,list]

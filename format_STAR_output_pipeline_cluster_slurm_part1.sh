@@ -15,7 +15,7 @@
 
 io_dir=$1
 gtf_dir=$2
-output_dir=$3
+scripts_dir=$3
 
 #source /usr/local/sge/default/common/settings.sh
 
@@ -25,7 +25,7 @@ echo "Sending jobs to gencluster..."
 #Store the path where the scripts are
 #MYSELF="$(readlink -f "$0")"
 #scripts_dir="${MYSELF%/*}"
-scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 for sample in $(ls -d "$io_dir"/*);do
