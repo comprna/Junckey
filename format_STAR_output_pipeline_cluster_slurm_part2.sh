@@ -14,7 +14,10 @@ o_dir=$2
 scripts_dir=$3
 
 module load R
-module load RStudio
+#If it's HYDRA
+#module load RStudio
+#If it's MARVIN
+module load Rstudio
 module load BEDTools
 module load Python
 
