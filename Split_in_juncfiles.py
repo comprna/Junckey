@@ -23,7 +23,7 @@ def main():
 
         # 1. Load the junction file with pandas
         print("Loading phenotype...")
-        readCounts_file = pd.read_table(readCounts_path, delimiter="\t", nrows=100)
+        readCounts_file = pd.read_table(readCounts_path, delimiter="\t")
         path = readCounts_path.split("/")
         del path[-1]
 #        path2 = "/".join(path)+"/Junc_files"
