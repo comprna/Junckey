@@ -55,7 +55,7 @@ def main():
     try:
 
         LeafCutter_path = args.leafcutter
-        readCounts_path = args.readcounts
+        readCounts_path = int(args.readcounts)
         threshold = args.threshold
         output_path = args.output
 
