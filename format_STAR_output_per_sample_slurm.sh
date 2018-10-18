@@ -30,9 +30,9 @@ scripts_dir=$3
 
 module load R
 #If it's HYDRA
-#module load RStudio
+module load RStudio
 #If it's MARVIN
-module load Rstudio
+#module load Rstudio
 module load BEDTools
 module load Python/2.7.9
 

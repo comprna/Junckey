@@ -104,7 +104,7 @@ try:
     # outRpkmFile.write("\t".join(headerItems) + "\n")
 
     print("\tpool_results.py: There are %d genes to calculate" % len(metaDict))
-    print ("")
+    print("")
 
     i = 1
     for rowID in sorted(metaDict):
@@ -118,13 +118,13 @@ try:
             sampleNormCount = "0"
             # rpkm = "0"
             if sampleID in countDict[rowID]:
-                sampleCount = countDict[rowID][sampleID]
+                sampleCount = str(countDict[rowID][sampleID])
                 # tmr = float(totalMappedReads[sampleID])
                 # al = float(averageLength[sampleID])
                 # rpkm = "%.9f" % ((math.pow(10,9) * float(sampleCount)) / (tmr * al))
             outCountsRow.append(sampleCount)
             if sampleID in countNormDict[rowID]:
-                sampleNormCount = countNormDict[rowID][sampleID]
+                sampleNormCount = str(countNormDict[rowID][sampleID])
                 # tmr = float(totalMappedReads[sampleID])
                 # al = float(averageLength[sampleID])
                 # rpkm = "%.9f" % ((math.pow(10,9) * float(sampleCount)) / (tmr * al))
