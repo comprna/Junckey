@@ -24,7 +24,7 @@ try:
 
     with open(totalJunctionReadsPath) as f:
         for line in f:
-            id_sample = line.rstrip().split("\t")[0].split("/")[1]
+            id_sample = line.rstrip().split("\t")[0].split("/")[0]
             spliced_reads = int(line.rstrip().split("\t")[1])
             if(id_sample not in totalJunctionReads):
                 totalJunctionReads[id_sample] = spliced_reads
