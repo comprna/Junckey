@@ -23,6 +23,7 @@
 # ==============================================================================================
 
 #SBATCH --mem 5000
+#SBATCH --partition=normal
 
 sample=$1
 gtf_dir=$2
@@ -53,7 +54,9 @@ echo "format_STAR_output_per_sample_slurm: Enriching output $sample... "
 #sortBed -i "$output_dir"/$(echo ${sample##*/})/SJ.out.bed > "$output_dir"/$(echo ${sample##*/})/SJ.out.sorted.bed
 #intersectBed -wao -a "$output_dir"/$(echo ${sample##*/})/SJ.out.sorted.bed -b $(echo $gtf_dir) -s > "$output_dir"/$(echo ${sample##*/})/SJ.out.enriched.bed
 sortBed -i "$sample"/SJ.out.bed > "$sample"/SJ.out.sorted.bed
-intersectBed -wao -a "$sample"/SJ.out.sorted.bed -b $(echo $gtf_dir) -s > "$sample"/SJ.out.enriched.bed
+#Get only the exons from the gtf and remove the comments
+#intersectBed -wao -a "$sample"/SJ.out.sorted.bed -b $(echo $gtf_dir) -s > "$sample"/SJ.out.enriched.bed
+intersectBed -wao -a "$sample"/SJ.out.sorted.bed -b <(grep -v "##" $(echo $gtf_dir) | grep "exon") -s > "$sample"/SJ.out.enriched.bed
 
 #3. Format the enriched.bed file for those that exactly match with the junctions and associate the info to the original bed file
 echo "format_STAR_output_per_sample_slurm: Recovering gene and junction type with $sample... "

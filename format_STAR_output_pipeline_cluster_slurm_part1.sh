@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#SBATCH --partition=normal
+
 #
 # ==============================================================================================
 # format_STAR_output_pipeline_cluster_slurm_part1:

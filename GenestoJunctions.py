@@ -58,9 +58,8 @@ def main():
         original_file_bed_filtered_path = sys.argv[1]
         output_path = sys.argv[2]
 
-        # original_file_bed_filtered_path = "/projects_rg/Omar/SF3B1_mouse/STAR/Double_IGO_07682_4_S134_L005/SJ.out.enriched.filtered.bed.TEST"
-        # output_path = "/projects_rg/Omar/SF3B1_mouse/STAR/Double_IGO_07682_4_S134_L005/SJ.out.junction.type2.bed"
-
+        # original_file_bed_filtered_path = "/projects_rg/test_Junckey/SAMPLE/SJ.out.enriched.filtered.bed"
+        # output_path = "/projects_rg/test_Junckey/SAMPLE/SJ.out.junction.type.bed"
 
         # 1. Load the intersect file between the junctions and the annotation
         original_file_bed_filtered = pd.read_table(original_file_bed_filtered_path, delimiter="\t", header=None)
