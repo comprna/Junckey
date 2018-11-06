@@ -33,9 +33,7 @@ MYDIR="${MYSELF%/*}"
 
 for sample in $(ls -d "$io_dir"/*);do
 	echo "Processing sample $sample..."
-	#Get only the exons from the gtf and remove the comments
-    grep -v "##" $(echo $gtf_dir) | grep "exon" > "$gtf_dir".aux
-	command="$(echo $MYDIR)/format_STAR_output_per_sample.sh $(echo $sample) $(echo $gtf_dir).aux"
+	command="$(echo $MYDIR)/format_STAR_output_per_sample.sh $(echo $sample) $(echo $gtf_dir)"
 	qsub -N format_STAR_"$cnt" -S /bin/sh -cwd -q bigmem,long,normal -pe serial 2 -b y $command
 	cnt=$((cnt+1))
 done

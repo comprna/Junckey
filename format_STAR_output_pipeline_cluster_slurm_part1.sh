@@ -32,9 +32,11 @@ echo "Sending jobs to gencluster..."
 
 for sample in $(ls -d "$io_dir"/*);do
 	echo "Processing sample $sample..."
-#	command="sbatch -J format_STAR_"$cnt" $(echo $scripts_dir)/format_STAR_output_per_sample_slurm.sh $(echo $sample) $(echo $gtf_dir)"
+	#Get only the exons from the gtf and remove the comments
+    grep -v "##" $(echo $gtf_dir) | grep "exon" > "$gtf_dir".aux
+	command="sbatch -J format_STAR_"$cnt" $(echo $scripts_dir)/format_STAR_output_per_sample_slurm.sh $(echo $sample) $(echo $gtf_dir).aux"
 	#echo $command
-	sbatch -J $(echo ${sample##*/})_Junckey $(echo $scripts_dir)/format_STAR_output_per_sample_slurm.sh $(echo $sample) $(echo $gtf_dir) $(echo $scripts_dir)
+	sbatch -J $(echo ${sample##*/})_Junckey $(echo $scripts_dir)/format_STAR_output_per_sample_slurm.sh $(echo $sample) $(echo $gtf_dir).aux $(echo $scripts_dir)
 	#qsub -N format_STAR_"$cnt" -S /bin/sh -cwd -q bigmem,long,normal -pe serial 2 -b y $command
 done
 
