@@ -1,7 +1,7 @@
 #!/bin/sh
 
-#SBATCH --partition=bigmem
-#SBATCH --mem 10000
+#SBATCH --partition=lowmem
+#SBATCH --mem 6000
 
 # ==============================================================================================
 # format_STAR_output_pipeline_cluster_slurm_part2:

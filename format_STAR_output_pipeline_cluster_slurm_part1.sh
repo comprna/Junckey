@@ -12,7 +12,7 @@
 #
 # Input: arg[1] --> path to the STAR output file (one folder per sample)
 #	 arg[2] --> path to the GTF annotation file
-#    arg[3] --> path to output folder
+#    arg[3] --> path to the Junckey scripts
 # ==============================================================================================
 
 io_dir=$1
