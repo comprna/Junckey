@@ -9,6 +9,9 @@
 # Description: This part2 gather all the information generated with the part1 in one file#
 #
 # Input: arg[1] --> path to the STAR output file (one folder per sample)
+#	 arg[2] --> output path where the files will be generated
+#    arg[3] --> file with the number of total mapped reads from STAR (run previosuly get_total_mapped_reads.sh)
+#    arg[4] --> path to the Junckey scripts
 # ==============================================================================================
 
 i_dir=$1

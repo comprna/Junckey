@@ -23,7 +23,7 @@
 # ==============================================================================================
 
 #SBATCH --mem 5000
-#SBATCH --partition=normal
+#SBATCH --partition=lowmem
 
 sample=$1
 gtf_dir=$2
