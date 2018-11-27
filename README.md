@@ -33,10 +33,10 @@ qsub -b y "format_STAR_output_pipeline_cluster_part2.sh <path_to_STAR_samples>"
 
 For computing the PSI of the junctions, we propose to do it according to the relative inclusion of the nearby junctions. In order to achieve this, we can calculate clusters of our junctions using LeafCutter (https://github.com/davidaknowles/leafcutter).
 
-First, we need to split the readCounts file in .junc files (one per sample). The next script will generate this files in the same provided path and the corresponding index file (index_juncfiles.txt):
+First, we need to split the readCounts file in .junc files (one per sample). The next script will generate these files and the corresponding index file (index_juncfiles.txt) in the output path:
 
 ```
-python Split_in_juncfiles.py <path_to_STAR_samples>/readCounts.tab
+python Split_in_juncfiles.py <path_to_STAR_samples>/readCounts.tab <output_path>
 ```
 
 Now we are ready for running LeafCutter. Here we show an example of execution, but there are several options in the github website for tuning the execution. It's necessary to provide the previous generated index_juncfiles.txt file:
