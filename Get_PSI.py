@@ -56,7 +56,7 @@ def main():
 
         LeafCutter_path = args.leafcutter
         readCounts_path = int(args.readcounts)
-        threshold = args.threshold
+        threshold = int(args.threshold)
         output_path = args.output
 
         # LeafCutter_path = "/projects_rg/SCLC_cohorts/Comparison_SCLC_PUCA_LUAD_LUSC/LeafCutter_output"
